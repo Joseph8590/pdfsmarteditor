@@ -1,0 +1,342 @@
+import React, { useEffect, useRef, useState } from 'react';
+import * as fabric from 'fabric';
+import axios from 'axios';
+import { useEditor } from '../contexts/EditorContext';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000';
+
+// Helper to update canvas size
+const updateCanvasSize = (currentCanvas: fabric.Canvas, img: any, container: HTMLElement, currentZoom: number) => {
+  const imgWidth = img.width || 0;
+  const imgHeight = img.height || 0;
+  const containerWidth = container.clientWidth;
+
+  if (imgWidth > 0 && containerWidth > 0) {
+    const fitScale = containerWidth / imgWidth;
+    const displayWidth = imgWidth * fitScale * currentZoom;
+    const displayHeight = imgHeight * fitScale * currentZoom;
+
+    currentCanvas.setDimensions({ width: displayWidth, height: displayHeight });
+    currentCanvas.setZoom(fitScale * currentZoom);
+    currentCanvas.requestRenderAll();
+  }
+};
+
+const PDFViewer: React.FC = () => {
+  const {
+    document,
+    currentPage,
+    canvas,
+    setCanvas,
+    drawingMode,
+    setDrawingMode,
+    color,
+    strokeWidth,
+    fontSize,
+    fontFamily,
+    sessionId,
+    setSessionId,
+    setPageCount,
+    zoom,
+    setIsUploading,
+  } = useEditor();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [pageImage, setPageImage] = useState<string>('');
+  const [pageLoading, setPageLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  // Upload document when file is selected
+  useEffect(() => {
+    if (document) {
+      const uploadDocument = async () => {
+        setIsUploading(true);
+        setErrorMessage('');
+        const formData = new FormData();
+        formData.append('file', document);
+
+        try {
+          const response = await axios.post(`${API_BASE_URL}/api/documents/upload`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
+          setSessionId(response.data.data.id);
+          setPageCount(response.data.data.page_count);
+        } catch (error) {
+          console.error('Error uploading document:', error);
+          setErrorMessage('Upload failed. Please check the file and try again.');
+          setSessionId('');
+          setPageImage('');
+        } finally {
+          setIsUploading(false);
+        }
+      };
+      uploadDocument();
+    }
+  }, [document, setSessionId, setPageCount]);
+
+  // Load page image when session or page changes
+  useEffect(() => {
+    if (sessionId && currentPage >= 0) {
+      const loadPageImage = async () => {
+        setPageLoading(true);
+        setErrorMessage('');
+        // Clear previous canvas/image so navigation doesn't overlay stale state
+        if (canvas) {
+          canvas.dispose();
+          setCanvas(null);
+        }
+        setPageImage('');
+        try {
+          const response = await axios.get(`${API_BASE_URL}/api/documents/${sessionId}/pages/${currentPage}`);
+          setPageImage(response.data.data.image);
+        } catch (error) {
+          console.error('Error loading page image:', error);
+          setErrorMessage('Unable to load page preview. Try again.');
+        } finally {
+          setPageLoading(false);
+        }
+      };
+      loadPageImage();
+    }
+  }, [sessionId, currentPage]);
+
+  // Keep track of latest zoom for ResizeObserver
+  const zoomRef = useRef(zoom);
+  useEffect(() => {
+    zoomRef.current = zoom;
+  }, [zoom]);
+
+  // Handle Zoom Changes
+  useEffect(() => {
+    if (canvas && containerRef.current && canvas.backgroundImage) {
+      updateCanvasSize(canvas, canvas.backgroundImage, containerRef.current, zoom);
+    }
+  }, [zoom, canvas]);
+
+  // Initialize Fabric.js canvas
+  useEffect(() => {
+    if (canvasRef.current && pageImage && containerRef.current) {
+      const fabricCanvas = new fabric.Canvas(canvasRef.current, {
+        isDrawingMode: drawingMode === 'pen',
+        selection: true,
+      });
+
+      // Set drawing brush properties
+      if (drawingMode === 'pen') {
+        const brush = new fabric.PencilBrush(fabricCanvas);
+        brush.color = color;
+        brush.width = strokeWidth;
+        fabricCanvas.freeDrawingBrush = brush;
+      }
+
+      // Add background image and size canvas to the page
+      console.log('Loading page image:', pageImage.substring(0, 50) + '...');
+
+      // Fabric.js v6 uses FabricImage instead of Image
+      const ImageClass = (fabric as any).FabricImage || (fabric as any).Image;
+
+      ImageClass.fromURL(pageImage).then((img: any) => {
+        console.log('Image loaded successfully');
+        img.set({
+          selectable: false,
+          evented: false,
+          originX: 'left',
+          originY: 'top',
+        });
+
+        // Initial sizing
+        const container = containerRef.current;
+        if (container) {
+          updateCanvasSize(fabricCanvas, img, container, zoomRef.current);
+        }
+
+        fabricCanvas.backgroundImage = img;
+        fabricCanvas.requestRenderAll();
+
+        const resizeObserver = new ResizeObserver(() => {
+          const currentContainer = containerRef.current;
+          if (currentContainer) {
+            requestAnimationFrame(() => {
+              updateCanvasSize(fabricCanvas, img, currentContainer, zoomRef.current);
+            });
+          }
+        });
+
+        if (container) {
+          resizeObserver.observe(container);
+        }
+
+        // Cleanup observer on canvas dispose? 
+        // We can attach it to the canvas object to clean it up later if needed, 
+        // or just rely on the effect cleanup.
+        (fabricCanvas as any).resizeObserver = resizeObserver;
+
+      }).catch((err: any) => {
+        console.error('Error loading page image:', err);
+      });
+
+      setCanvas(fabricCanvas);
+
+      return () => {
+        if ((fabricCanvas as any).resizeObserver) {
+          (fabricCanvas as any).resizeObserver.disconnect();
+        }
+        fabricCanvas.dispose();
+      };
+    }
+  }, [pageImage, setCanvas, containerRef]); // Removed zoom dependency
+
+  // Handle drawing mode and properties changes
+  useEffect(() => {
+    if (canvas) {
+      canvas.isDrawingMode = drawingMode === 'pen';
+      if (drawingMode === 'pen') {
+        // Ensure brush exists
+        if (!canvas.freeDrawingBrush) {
+          canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+        }
+        canvas.freeDrawingBrush.color = color;
+        canvas.freeDrawingBrush.width = strokeWidth;
+      }
+    }
+  }, [canvas, drawingMode, color, strokeWidth]);
+
+  // Update active object when font properties change
+  useEffect(() => {
+    if (canvas) {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject && (activeObject.type === 'i-text' || activeObject.type === 'text' || activeObject.type === 'textbox')) {
+        activeObject.set({
+          fontSize: fontSize,
+          fontFamily: fontFamily,
+          fill: color
+        });
+        canvas.requestRenderAll();
+      }
+    }
+  }, [canvas, fontSize, fontFamily, color]);
+
+  // Handle canvas interactions (Tools)
+  useEffect(() => {
+    if (canvas) {
+      const handleMouseDown = (opt: any) => {
+        const evt = opt.e;
+        if (opt.target) {
+          // Clicked on an existing object, don't add new one
+          return;
+        }
+
+        // Get pointer in canvas coordinates (taking zoom into account)
+        const pointer = canvas.getPointer(evt);
+
+        if (drawingMode === 'text') {
+          const text = new fabric.IText('Enter text', {
+            left: pointer.x,
+            top: pointer.y,
+            fill: color,
+            fontSize: fontSize,
+            fontFamily: fontFamily,
+            selectable: true,
+            hasControls: true,
+          });
+          canvas.add(text);
+          canvas.setActiveObject(text);
+          text.enterEditing();
+          text.selectAll();
+          setDrawingMode('select'); // Switch back to select mode to allow dragging
+        } else if (drawingMode === 'rectangle') {
+          const rect = new fabric.Rect({
+            left: pointer.x,
+            top: pointer.y,
+            width: 100,
+            height: 100,
+            fill: 'transparent',
+            stroke: color,
+            strokeWidth: strokeWidth,
+            selectable: true,
+            hasControls: true,
+          });
+          canvas.add(rect);
+          canvas.setActiveObject(rect);
+          setDrawingMode('select');
+        } else if (drawingMode === 'circle') {
+          const circle = new fabric.Circle({
+            left: pointer.x,
+            top: pointer.y,
+            radius: 50,
+            fill: 'transparent',
+            stroke: color,
+            strokeWidth: strokeWidth,
+            selectable: true,
+            hasControls: true,
+          });
+          canvas.add(circle);
+          canvas.setActiveObject(circle);
+          setDrawingMode('select');
+        }
+      };
+
+      canvas.on('mouse:down', handleMouseDown);
+
+      return () => {
+        canvas.off('mouse:down', handleMouseDown);
+      };
+    }
+  }, [canvas, drawingMode, color, strokeWidth, setDrawingMode]);
+
+  // Handle canvas object creation (general)
+  useEffect(() => {
+    if (canvas) {
+      const handleObjectAdded = (e: any) => {
+        const obj = e.target;
+        if (obj) {
+          obj.set({
+            selectable: true,
+            hasControls: true,
+            hasBorders: true,
+            lockScalingFlip: true,
+          });
+        }
+      };
+
+      canvas.on('object:added', handleObjectAdded);
+
+      return () => {
+        canvas.off('object:added', handleObjectAdded);
+      };
+    }
+  }, [canvas]);
+
+  return (
+    <div ref={containerRef} className="pdf-viewer relative w-full h-full overflow-hidden">
+      {pageLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-20">
+          <div className="px-4 py-2 rounded-lg bg-white shadow border border-sky-100 text-sky-700 text-sm font-medium">
+            Loading page…
+          </div>
+        </div>
+      )}
+      {errorMessage && (
+        <div className="absolute top-4 right-4 z-30 px-4 py-3 bg-rose-50 text-rose-700 border border-rose-200 rounded-xl shadow">
+          {errorMessage}
+        </div>
+      )}
+      {pageImage && (
+        <canvas
+          ref={canvasRef}
+          style={{
+            border: '1px solid #e5e7eb',
+            display: 'block',
+          }}
+        />
+      )}
+      {!pageImage && !pageLoading && !errorMessage && (
+        <div className="absolute inset-0 flex items-center justify-center text-sky-500 text-sm">
+          Upload a PDF to get started.
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PDFViewer;

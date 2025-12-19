@@ -1,0 +1,267 @@
+/* ============================================
+   APP-SPECIFIC STYLES
+   ============================================ */
+
+/* Animated Background Pattern */
+.app-background {
+  background: linear-gradient(to bottom, #f9fafb, #f3f4f6);
+  position: relative;
+}
+
+.app-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-mesh);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Sidebar Gradient Accent */
+.sidebar-gradient {
+  background: linear-gradient(to bottom, #ffffff, #ecfeff);
+  position: relative;
+}
+
+.sidebar-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--gradient-primary);
+  opacity: 0.8;
+}
+
+/* Logo Animation */
+.logo-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-glow {
+  position: relative;
+  animation: rotateGlow 10s linear infinite;
+}
+
+/* Button Hover Effects */
+.btn-primary {
+  background: var(--gradient-primary);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-lg);
+}
+
+/* Card Hover Animation */
+.card-interactive {
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.card-interactive::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.card-interactive:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-2xl);
+}
+
+.card-interactive:hover::after {
+  opacity: 0.05;
+}
+
+/* Navigation Button Active State */
+.nav-button-active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(109, 40, 217, 0.15));
+  border-left: 3px solid var(--color-primary-600);
+  position: relative;
+}
+
+.nav-button-active::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-full);
+}
+
+/* Tool Mode Button */
+.tool-mode-btn {
+  position: relative;
+  transition: all var(--transition-bounce);
+}
+
+.tool-mode-btn:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.tool-mode-btn.active {
+  animation: scaleIn 0.3s ease-out;
+}
+
+/* Upload Zone Animation */
+.upload-zone {
+  position: relative;
+  transition: all var(--transition-base);
+}
+
+.upload-zone::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: var(--gradient-primary);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  z-index: -1;
+}
+
+.upload-zone:hover::before {
+  opacity: 1;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.upload-zone:hover {
+  transform: scale(1.02);
+}
+
+/* Gradient Border Animation */
+@keyframes borderRotate {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient-border {
+  background: linear-gradient(90deg, #22d3ee, #0ea5e9, #2563eb, #22d3ee);
+  background-size: 300% 300%;
+  animation: borderRotate 3s ease infinite;
+}
+
+/* Range Slider Custom Styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-track {
+  background: linear-gradient(to right, var(--color-primary-400), var(--color-primary-600));
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: white;
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  border: 3px solid var(--color-primary-600);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: var(--shadow-glow);
+}
+
+input[type="range"]::-moz-range-track {
+  background: linear-gradient(to right, var(--color-primary-400), var(--color-primary-600));
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+input[type="range"]::-moz-range-thumb {
+  background: white;
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  border: 3px solid var(--color-primary-600);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Color Picker Enhancement */
+input[type="color"] {
+  cursor: pointer;
+  border: 3px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+    var(--gradient-primary) border-box;
+  transition: all var(--transition-base);
+}
+
+input[type="color"]:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Smooth Page Transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all var(--transition-slow);
+}
+
+/* Loading Shimmer Effect */
+.shimmer {
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 100%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}

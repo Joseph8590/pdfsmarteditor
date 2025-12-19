@@ -1,0 +1,83 @@
+import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+
+import FileUpload from '../src/components/FileUpload';
+import Header from '../src/components/Header';
+
+const useEditorMock = vi.fn();
+
+vi.mock('../src/contexts/EditorContext', () => ({
+  useEditor: () => useEditorMock(),
+}));
+
+describe('FileUpload', () => {
+  beforeEach(() => {
+    useEditorMock.mockReturnValue({
+      setDocument: vi.fn(),
+      sessionId: '',
+      isUploading: false,
+    });
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('calls setDocument when a file is selected', () => {
+    const file = new File(['content'], 'resume.pdf', { type: 'application/pdf' });
+    const setDocument = vi.fn();
+    useEditorMock.mockReturnValue({ setDocument });
+
+    const { container } = render(<FileUpload />);
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [file] } });
+
+    expect(setDocument).toHaveBeenCalledWith(file);
+  });
+});
+
+describe('Header', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('invokes exportPDF when Export button is clicked', () => {
+    const exportPDF = vi.fn();
+    const saveChanges = vi.fn();
+    useEditorMock.mockReturnValue({ exportPDF, saveChanges, hasUnsavedChanges: true, sessionId: 'abc', isUploading: false });
+
+    const { getByRole } = render(<Header />);
+    fireEvent.click(getByRole('button', { name: /Export/i }));
+
+    expect(exportPDF).toHaveBeenCalledTimes(1);
+  });
+
+  it('toggles Save button enabled state based on hasUnsavedChanges', () => {
+    const saveChanges = vi.fn();
+    useEditorMock.mockReturnValue({
+      exportPDF: vi.fn(),
+      saveChanges,
+      hasUnsavedChanges: false,
+      sessionId: 'abc',
+      isUploading: false,
+    });
+
+    const { rerender, getByRole } = render(<Header />);
+    const saveButton = getByRole('button', { name: /Save Changes/i }) as HTMLButtonElement;
+    expect(saveButton.getAttribute('disabled')).not.toBeNull();
+
+    useEditorMock.mockReturnValue({
+      exportPDF: vi.fn(),
+      saveChanges,
+      hasUnsavedChanges: true,
+      sessionId: 'abc',
+      isUploading: false,
+    });
+    rerender(<Header />);
+    const enabledButton = getByRole('button', { name: /Save Changes/i }) as HTMLButtonElement;
+    expect(enabledButton.getAttribute('disabled')).toBeNull();
+    fireEvent.click(enabledButton);
+    expect(saveChanges).toHaveBeenCalledTimes(1);
+  });
+});

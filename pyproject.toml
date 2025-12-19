@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdfsmarteditor"
+version = "0.1.0"
+description = "A smart PDF editor with CLI and API capabilities"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    {name = "Othmane BLIAL"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Graphics :: Editors",
+    "Topic :: Utilities"
+]
+keywords = ["pdf", "editor", "pymupdf", "cli", "pdf-manipulation", "api"]
+dependencies = [
+    "PyMuPDF",
+    "Pillow",
+    "typer",
+    "fastapi",
+    "uvicorn",
+    "python-multipart",
+    "pdf2docx",
+    "python-pptx",
+    "pdfplumber",
+    "pandas",
+    "openpyxl",
+    "pytesseract",
+    "python-dotenv"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "httpx",
+]
+
+[project.urls]
+Homepage = "https://github.com/OthmaneBlial/pdfsmarteditor"
+Repository = "https://github.com/OthmaneBlial/pdfsmarteditor"
+Issues = "https://github.com/OthmaneBlial/pdfsmarteditor/issues"
+
+[project.scripts]
+pdfsmarteditor = "pdfsmarteditor.cli.main:app"
+
+[tool.setuptools.packages.find]
+include = ["pdfsmarteditor*"]
