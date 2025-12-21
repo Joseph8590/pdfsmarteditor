@@ -25,7 +25,7 @@
 *Priority: High | Complexity: Low-Medium*
 
 ### Interface & Navigation
-- [ ] **Dark Mode** - Dark theme to reduce eye strain
+- [X] **Dark Mode** - Dark theme to reduce eye strain
 - [ ] **Keyboard Shortcuts** - Ctrl+S save, Ctrl+Z undo, etc.
 - [ ] **Recent Files History** - List of recently opened PDFs
 - [ ] **Thumbnail Preview** - Grid view of all pages

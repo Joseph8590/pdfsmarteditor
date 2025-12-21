@@ -36,6 +36,7 @@ interface EditorContextType extends EditorState {
   setZoom: (zoom: number) => void;
   setIsUploading: (uploading: boolean) => void;
   undo: () => void;
+  redo: () => void;
   saveChanges: (force?: boolean) => Promise<void>;
   exportPDF: () => Promise<void>;
 }
@@ -126,6 +127,20 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
     }
   };
 
+  const redo = () => {
+    if (canvas && historyStep < history.length - 1) {
+      isUndoing.current = true;
+      const nextState = history[historyStep + 1];
+      setHistoryStep(prev => prev + 1);
+
+      canvas.loadFromJSON(JSON.parse(nextState)).then(() => {
+        canvas.renderAll();
+        isUndoing.current = false;
+        setHasUnsavedChanges(true);
+      });
+    }
+  };
+
   const saveChanges = async (force = false) => {
     if (!sessionId || !canvas) return;
     if (!force && !hasUnsavedChanges) return;
@@ -139,9 +154,10 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
       };
 
       const originalBg = canvas.backgroundImage;
-      canvas.backgroundImage = null;
+      // @ts-ignore - Fabric types mismatch for setting null/undefined on backgroundImage in strict mode
+      canvas.backgroundImage = undefined;
       canvas.requestRenderAll();
-      const overlayImage = canvas.toDataURL({ format: 'png' });
+      const overlayImage = canvas.toDataURL({ format: 'png', multiplier: 1 });
       canvas.backgroundImage = originalBg;
       if (originalBg) {
         canvas.requestRenderAll();
@@ -214,6 +230,7 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
     setZoom,
     setIsUploading,
     undo,
+    redo,
     saveChanges,
     exportPDF,
   };
